@@ -1,0 +1,3 @@
+yfinance
+tweepy
+python-dotenv
