@@ -4,7 +4,6 @@ import os
 from dotenv import load_dotenv
 import tweepy
 
-# Load keys (GitHub Secrets will provide them)
 load_dotenv()
 
 API_KEY = os.getenv("API_KEY")
@@ -15,7 +14,7 @@ ACCESS_TOKEN_SECRET = os.getenv("ACCESS_TOKEN_SECRET")
 MAG7 = ["AAPL", "MSFT", "NVDA", "AMZN", "META", "GOOGL", "TSLA"]
 
 def get_stock_performance(tickers):
-    print(f"Downloading Mag 7...")
+    print("Downloading Mag 7...")
     results = []
     
     data = yf.download(
@@ -106,18 +105,18 @@ def build_tweet(mag7, market):
     
     mag_lines = []
     for s in mag7:
-        mag_lines.append(f"{s['ticker']} {format_pct(s['daily'])} ({format_pct(s['ytd'])})")
+        mag_lines.append(f"{s['ticker']}  {format_pct(s['daily'])}  {format_pct(s['ytd'])}")
     mag_text = "\n".join(mag_lines)
     
     vix_text = f"{market['vix']:.1f}" if market.get('vix') is not None else "n/a"
-    indices_line = f"SPX {format_pct(market['spx'])} | NDX {format_pct(market['ndx'])} | VIX {vix_text}"
+    indices_line = f"SPX {format_pct(market['spx'])}  |  NDX {format_pct(market['ndx'])}  |  VIX {vix_text}"
     
     yields_parts = []
     if market.get("ust2y") is not None:
         yields_parts.append(f"2Y {market['ust2y']:.2f}%")
     if market.get("tnx") is not None:
         yields_parts.append(f"10Y {market['tnx']:.2f}%")
-    yields_line = " | ".join(yields_parts)
+    yields_line = "  |  ".join(yields_parts)
     
     commodities = []
     if market.get("oil"):
@@ -126,11 +125,11 @@ def build_tweet(mag7, market):
         commodities.append(f"Gold ${market['gold']:,.0f}")
     if market.get("btc"):
         commodities.append(f"BTC ${market['btc']:,.0f}")
-    commodities_line = " | ".join(commodities)
+    commodities_line = "  |  ".join(commodities)
     
     tweet = (
         f"Market Snapshot – {today}\n\n"
-        f"Mag 7 (Daily / YTD)\n{mag_text}\n\n"
+        f"Mag 7  ·  Daily / YTD\n{mag_text}\n\n"
         f"{indices_line}\n"
         f"{yields_line}\n"
         f"{commodities_line}"
