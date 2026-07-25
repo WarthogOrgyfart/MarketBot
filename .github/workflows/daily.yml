@@ -2,7 +2,7 @@ name: Daily Market Snapshot
 
 on:
   schedule:
-    - cron: '15 20 * * 1-5'   # 20:15 UTC = 4:15 PM ET, Monday to Friday
+    - cron: '0 20 * * 1-5'   # 20:00 UTC = 22:00 CEST, Monday to Friday
   workflow_dispatch:
 
 jobs:
