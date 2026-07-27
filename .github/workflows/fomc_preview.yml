@@ -1,0 +1,32 @@
+name: FOMC Preview
+
+on:
+  schedule:
+    # Every Wednesday at 14:30 CEST (12:30 UTC)
+    - cron: '30 12 * * 3'
+  workflow_dispatch:
+
+jobs:
+  fomc:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install cme-fedwatch
+
+      - name: Run FOMC preview
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
+          API_SECRET: ${{ secrets.API_SECRET }}
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
+        run: python fomc_preview.py
