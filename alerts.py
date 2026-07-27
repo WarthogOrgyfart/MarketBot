@@ -79,24 +79,24 @@ def check_alerts():
 
     print(f"Checking alerts for {today}...")
 
-    # ===== OIL (Futures) =====
+    # ===== OIL =====
     change, price = get_daily_change_and_price("CL=F")
     if change is not None and abs(change) >= 5.0 and "oil_big_move" not in state["posted"]:
-        text = f"Oil futures {change:+.1f}%\nNow at ${price:.2f}"
+        text = f"Oil {change:+.1f}%\nNow at ${price:.2f}"
         post_tweet(text)
         state["posted"].append("oil_big_move")
 
-    # ===== GOLD (Futures) =====
+    # ===== GOLD =====
     change, price = get_daily_change_and_price("GC=F")
     if change is not None:
         if abs(change) >= 5.0 and "gold_big_move" not in state["posted"]:
-            text = f"Gold futures {change:+.1f}%\nNow at ${price:,.0f}"
+            text = f"Gold {change:+.1f}%\nNow at ${price:,.0f}"
             post_tweet(text)
             state["posted"].append("gold_big_move")
 
         ath = get_ath("GC=F")
         if ath and price and price >= ath * 0.999 and "gold_ath" not in state["posted"]:
-            text = f"Gold futures new ATH\n${price:,.0f}"
+            text = f"Gold new ATH\n${price:,.0f}"
             post_tweet(text)
             state["posted"].append("gold_ath")
 
